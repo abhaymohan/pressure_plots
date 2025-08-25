@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
 # ------------------------------------------------------------
-# 1) “Cat Mesentery” pressure data (arterial + venous)
+# pressure data (arterial + venous)
 # ------------------------------------------------------------
 d_art_CM_p = np.array([
     8.088888889,  8.977777778,  9.777777778, 10.75555556, 11.73333333,
@@ -50,7 +50,7 @@ p_ven_CM_p = np.array([
 ])
 
 # ------------------------------------------------------------
-# 2) “BC‐Upper” pressure data
+# “BC‐Upper” pressure data
 # ------------------------------------------------------------
 d_art_BCU = np.array([
      12.0, 18.0,  9.0,  10.0, 14.230047, 14.0, 19.57097168,
@@ -76,7 +76,7 @@ p_ven_BCU = np.array([
 ])
 
 # ------------------------------------------------------------
-# 3) “BC‐Lower” pressure data
+# “BC‐Lower” pressure data
 # ------------------------------------------------------------
 d_art_BCL = np.array([
      12.0, 18.0, 9.0, 10.0, 14.230047, 14.0, 19.57097168,
@@ -102,7 +102,7 @@ p_ven_BCL = np.array([
 ])
 
 # ------------------------------------------------------------
-# 4) Simulation data: H‐1, H‐3, T‐1, T‐2, T‐3
+# Simulation data: H‐1
 # ------------------------------------------------------------
 # H-1
 d_art_H1 = np.array([12, 18, 9, 10])
@@ -110,33 +110,6 @@ p_art_H1 = np.array([38.7999008, 43.75031, 40.375031, 40.375031])
 d_ven_H1 = np.array([23, 9, 10, 23, 18, 10])
 p_ven_H1 = np.array([33.124597, 37.749814, 37.749814, 31.999504, 31.999504, 31.749318])
 
-# H-3
-d_art_H3 = np.array([25, 17])
-p_art_H3 = np.array([49.223224, 41.115567])
-d_ven_H3 = np.array([8, 8.5, 33])
-p_ven_H3 = np.array([29.94945752, 39.86197689, 31.62701817])
-
-# T-1
-d_art_T1 = np.array([8.53642765, 15.74837301, 8.295533843, 7.45715371, 9])
-p_art_T1 = np.array([36.250186, 39.87381053, 40.58554436, 37.5627945, 38.125341])
-d_ven_T1 = np.array([17, 10.21958237, 9, 15.0345894, 13.1, 10.29863587, 11.58032918])
-p_ven_T1 = np.array([34.6179414, 35.81466532, 35.39493062, 34.250186, 31.67031325, 32.1500424, 31.0624225])
-
-# T-2
-d_art_T2 = np.array([14.230047, 14, 19.57097168, 10.2623794, 9.99573432, 15.63928652, 18.06188176])
-p_art_T2 = np.array([38.79189812, 39.1860557, 43.94641089, 39.52538375, 39.03184295, 38.560579, 44.50184914])
-d_ven_T2 = np.array([14.50287384, 17.57133144, 12.92180864, 19.72464364])
-p_ven_T2 = np.array([35.36334737, 33.09009979, 32.49873123, 31.01037936])
-
-# T-3
-d_art_T3 = np.array([12, 18])
-p_art_T3 = np.array([41.27546309, 41.30936589])
-d_ven_T3 = np.array([18, 13, 20, 23.43, 16])
-p_ven_T3 = np.array([33.38627218, 35.00882223, 32.79887838, 32.26623733, 35.62615176])
-
-# ------------------------------------------------------------
-# 5) Convert diameters → signed x so that D = 8 μm → x = 0
-# ------------------------------------------------------------
 pivot = 8.0
 
 x_art_CM = -np.abs(d_art_CM_p - pivot)
@@ -151,20 +124,8 @@ x_ven_BCL = +np.abs(d_ven_BCL - pivot)
 x_H1 = np.concatenate((-np.abs(d_art_H1 - pivot), +np.abs(d_ven_H1 - pivot)))
 p_H1 = np.concatenate((p_art_H1, p_ven_H1))
 
-x_H3 = np.concatenate((-np.abs(d_art_H3 - pivot), +np.abs(d_ven_H3 - pivot)))
-p_H3 = np.concatenate((p_art_H3, p_ven_H3))
-
-x_T1 = np.concatenate((-np.abs(d_art_T1 - pivot), +np.abs(d_ven_T1 - pivot)))
-p_T1 = np.concatenate((p_art_T1, p_ven_T1))
-
-x_T2 = np.concatenate((-np.abs(d_art_T2 - pivot), +np.abs(d_ven_T2 - pivot)))
-p_T2 = np.concatenate((p_art_T2, p_ven_T2))
-
-x_T3 = np.concatenate((-np.abs(d_art_T3 - pivot), +np.abs(d_ven_T3 - pivot)))
-p_T3 = np.concatenate((p_art_T3, p_ven_T3))
-
 # ------------------------------------------------------------
-# 6) Fit a 6th‐degree polynomial to Cat Mesentery pressure
+# Fit a 6th‐degree polynomial
 # ------------------------------------------------------------
 x_all_CM = np.concatenate((x_art_CM, x_ven_CM))
 p_all_CM = np.concatenate((p_art_CM_p, p_ven_CM_p))
@@ -180,24 +141,12 @@ ci95 = pred.conf_int(alpha=0.05)
 p_lo95, p_hi95 = ci95[:,0], ci95[:,1]
 
 # ------------------------------------------------------------
-# 7) Plotting
+# Plotting
 # ------------------------------------------------------------
 fig, ax = plt.subplots(figsize=(9, 6))
 
-# BC‐Upper & BC‐Lower
-#ax.scatter(np.concatenate((x_art_BCU, x_ven_BCU)),
-#           np.concatenate((p_art_BCU, p_ven_BCU)),
-#           c='C1', marker='o', s=60, edgecolor='k', label='BC‐Upper')
-#ax.scatter(np.concatenate((x_art_BCL, x_ven_BCL)),
-#           np.concatenate((p_art_BCL, p_ven_BCL)),
-#           c='C3', marker='s', s=60, edgecolor='k', label='BC‐Lower')
-
 # Simulation sets
 ax.scatter(x_H1, p_H1, c='C2', marker='^', s=60, edgecolor='k', label='H-1')
-#ax.scatter(x_H3, p_H3, c='C4', marker='v', s=60, edgecolor='k', label='H-3')
-#ax.scatter(x_T1, p_T1, c='C5', marker='D', s=60, edgecolor='k', label='T-1')
-#ax.scatter(x_T2, p_T2, c='C6', marker='X', s=60, edgecolor='k', label='T-2')
-#ax.scatter(x_T3, p_T3, c='C7', marker='P', s=60, edgecolor='k', label='T-3')
 
 # Regression & 95% CI
 ax.plot(x_fit, p_mean, 'k-', lw=2, label='In vivo')
@@ -226,3 +175,4 @@ ax.legend(loc='upper right', frameon=False, ncol=1, fontsize='medium')
 
 plt.tight_layout()
 plt.show()
+
