@@ -50,7 +50,7 @@ p_ven_CM_p = np.array([
 ])
 
 # ------------------------------------------------------------
-# “BC‐Upper” pressure data
+# BC‐Upper pressure data
 # ------------------------------------------------------------
 d_art_BCU = np.array([
      12.0, 18.0,  9.0,  10.0, 14.230047, 14.0, 19.57097168,
@@ -76,7 +76,7 @@ p_ven_BCU = np.array([
 ])
 
 # ------------------------------------------------------------
-# “BC‐Lower” pressure data
+# BC‐Lower pressure data
 # ------------------------------------------------------------
 d_art_BCL = np.array([
      12.0, 18.0, 9.0, 10.0, 14.230047, 14.0, 19.57097168,
@@ -102,7 +102,7 @@ p_ven_BCL = np.array([
 ])
 
 # ------------------------------------------------------------
-# Simulation data: H‐1
+# Simulation data - H‐1
 # ------------------------------------------------------------
 # H-1
 d_art_H1 = np.array([12, 18, 9, 10])
@@ -125,7 +125,7 @@ x_H1 = np.concatenate((-np.abs(d_art_H1 - pivot), +np.abs(d_ven_H1 - pivot)))
 p_H1 = np.concatenate((p_art_H1, p_ven_H1))
 
 # ------------------------------------------------------------
-# Fit a 6th‐degree polynomial
+# Fit 6th‐degree polynomial
 # ------------------------------------------------------------
 x_all_CM = np.concatenate((x_art_CM, x_ven_CM))
 p_all_CM = np.concatenate((p_art_CM_p, p_ven_CM_p))
@@ -175,4 +175,5 @@ ax.legend(loc='upper right', frameon=False, ncol=1, fontsize='medium')
 
 plt.tight_layout()
 plt.show()
+
 
