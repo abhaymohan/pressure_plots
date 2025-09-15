@@ -50,7 +50,7 @@ p_ven_CM_p = np.array([
 ])
 
 # ------------------------------------------------------------
-# “BC‐Upper” pressure data
+# bc‐upper pressure data
 # ------------------------------------------------------------
 d_art_BCU = np.array([
      12.0, 18.0,  9.0,  10.0, 14.230047, 14.0, 19.57097168,
@@ -76,7 +76,7 @@ p_ven_BCU = np.array([
 ])
 
 # ------------------------------------------------------------
-# “BC‐Lower” pressure data
+# bc‐lower pressure data
 # ------------------------------------------------------------
 d_art_BCL = np.array([
      12.0, 18.0, 9.0, 10.0, 14.230047, 14.0, 19.57097168,
@@ -102,7 +102,7 @@ p_ven_BCL = np.array([
 ])
 
 # ------------------------------------------------------------
-# Simulation data: H‐1
+# simulation data H‐1
 # ------------------------------------------------------------
 # H-1
 d_art_H1 = np.array([12, 18, 9, 10])
@@ -125,7 +125,7 @@ x_H1 = np.concatenate((-np.abs(d_art_H1 - pivot), +np.abs(d_ven_H1 - pivot)))
 p_H1 = np.concatenate((p_art_H1, p_ven_H1))
 
 # ------------------------------------------------------------
-# Fit a 6th‐degree polynomial
+# fit 6th‐degree polynomial
 # ------------------------------------------------------------
 x_all_CM = np.concatenate((x_art_CM, x_ven_CM))
 p_all_CM = np.concatenate((p_art_CM_p, p_ven_CM_p))
@@ -141,19 +141,19 @@ ci95 = pred.conf_int(alpha=0.05)
 p_lo95, p_hi95 = ci95[:,0], ci95[:,1]
 
 # ------------------------------------------------------------
-# Plotting
+# plotting
 # ------------------------------------------------------------
 fig, ax = plt.subplots(figsize=(9, 6))
 
-# Simulation sets
+# simulation sets
 ax.scatter(x_H1, p_H1, c='C2', marker='^', s=60, edgecolor='k', label='H-1')
 
-# Regression & 95% CI
+# regression & 95% CI
 ax.plot(x_fit, p_mean, 'k-', lw=2, label='In vivo')
 ax.plot(x_fit, p_lo95, '-.', c='C7', label='95% CI lower')
 ax.plot(x_fit, p_hi95, '-.', c='C7', label='95% CI upper')
 
-# Non‐monotonic x‐axis
+# non‐monotonic x‐axis
 left_D  = np.array([56,48,40,32,24,16,8], dtype=float)
 right_D = np.array([16,24,32,40,48,56], dtype=float)
 ticks = np.concatenate((-np.abs(left_D-pivot), [0], +np.abs(right_D-pivot)))
@@ -164,15 +164,16 @@ ax.set_xlabel('D (μm) ← Arterial   |   Venous →', fontsize=11)
 ax.set_ylabel('Pressure (mmHg)',               fontsize=11)
 ax.axvline(0, color='0.5', linestyle='--', linewidth=1)
 
-# Grid & limits
+# grid & limits
 #ax.minorticks_on()
 #ax.grid(which='major', linestyle=':', alpha=0.5)
 #ax.grid(which='minor', linestyle=':', alpha=0.3)
 ax.set_xlim(-(24-pivot), +(24-pivot))
 
-# Legend
+# legend
 ax.legend(loc='upper right', frameon=False, ncol=1, fontsize='medium')
 
 plt.tight_layout()
 plt.show()
+
 
